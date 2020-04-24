@@ -23,6 +23,10 @@ class AppoitmentsRepository {
 
     return findAppointment || null;
   }
+
+  public all(): Appointment[] {
+    return this.appointments;
+  }
 }
 
 export default AppoitmentsRepository;
