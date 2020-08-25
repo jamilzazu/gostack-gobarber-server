@@ -1,3 +1,5 @@
+// import AppError from '@shared/errors/AppError';
+
 import FakeAppointmentsRepository from '@modules/appointments/repositories/fakes/FakeAppointmentsRepository';
 import ListProviderDayAvailabilityService from './ListProviderDayAvailabilityService';
 

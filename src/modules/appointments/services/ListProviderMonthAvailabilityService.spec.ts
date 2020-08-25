@@ -1,9 +1,9 @@
-import FakeAppointmentsRepository from '@modules/appointments/repositories/fakes/FakeAppointmentsRepository';
+// import AppError from '@shared/errors/AppError';
 
+import FakeAppointmentsRepository from '@modules/appointments/repositories/fakes/FakeAppointmentsRepository';
 import ListProviderMonthAvailabilityService from './ListProviderMonthAvailabilityService';
 
 let listProviderMonthAvailability: ListProviderMonthAvailabilityService;
-
 let fakeAppointmentsRepository: FakeAppointmentsRepository;
 
 describe('ListProviderMonthAvailabilityService', () => {

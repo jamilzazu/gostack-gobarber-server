@@ -1,34 +1,39 @@
 import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
+import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 
-import ListProvidersService from '@modules/appointments/services/ListProvidersService';
+import ListProvidersService from './ListProvidersService';
 
 let fakeUsersRepository: FakeUsersRepository;
-
+let fakeCacheProvider: FakeCacheProvider;
 let listProviders: ListProvidersService;
 
-describe('listProviders', () => {
+describe('ListProviders', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
-
-    listProviders = new ListProvidersService(fakeUsersRepository);
+    fakeCacheProvider = new FakeCacheProvider();
+    listProviders = new ListProvidersService(
+      fakeUsersRepository,
+      fakeCacheProvider,
+    );
   });
-  it('shold be able to list the providers', async () => {
+
+  it('should be able to list providers', async () => {
     const user1 = await fakeUsersRepository.create({
-      name: 'Jamil Zazu',
-      email: 'jamillzazu@hotmail.com',
-      password: '123121',
+      name: 'John Doe',
+      email: 'johndoe@example.com',
+      password: '123456',
     });
 
     const user2 = await fakeUsersRepository.create({
-      name: 'Jamil Zazu 2',
-      email: 'jamillzazu2@hotmail.com',
-      password: '123121',
+      name: 'John Doe 2',
+      email: 'johndoe2@example.com',
+      password: '123456',
     });
 
     const loggedUser = await fakeUsersRepository.create({
-      name: 'Jamil Zazu 3',
-      email: 'jamillzazu3@hotmail.com',
-      password: '123121',
+      name: 'John Doe 4',
+      email: 'johndoe@example.com',
+      password: '123456',
     });
 
     const providers = await listProviders.execute({
@@ -36,5 +41,6 @@ describe('listProviders', () => {
     });
 
     expect(providers).toEqual([user1, user2]);
+    expect(providers).not.toEqual(loggedUser);
   });
 });

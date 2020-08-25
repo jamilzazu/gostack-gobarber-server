@@ -1,14 +1,10 @@
-import { injectable, inject } from 'tsyringe';
-
-import path from 'path';
-
-import IUsersRepository from '@modules/users/repositories/IUsersRepository';
-
-import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
-
-import IUserTokensRepository from '@modules/users/repositories/IUserTokensRepository';
-
 import AppError from '@shared/errors/AppError';
+import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import { injectable, inject } from 'tsyringe';
+import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
+import path from 'path';
+import IUserTokensRepository from '../repositories/IUserTokensRepository';
+// import User from '../infra/typeorm/entities/User';
 
 interface IRequest {
   email: string;
@@ -35,7 +31,6 @@ class SendForgotPasswordEmailService {
     }
 
     const { token } = await this.userTokensRepository.generate(user.id);
-
     const forgotPasswordTemplate = path.resolve(
       __dirname,
       '..',
@@ -44,16 +39,20 @@ class SendForgotPasswordEmailService {
     );
 
     await this.mailProvider.sendMail({
-      to: { name: user.name, email: user.email },
-      subject: '[GoBarber] Recuperação de senha',
+      to: {
+        name: user.name,
+        email: user.email,
+      },
+      subject: '[GoBarber] Recuperacao de senha',
       templateData: {
         file: forgotPasswordTemplate,
         variables: {
           name: user.name,
-          link: `http://localhost:3000/reset_password?token=${token}`,
+          link: `${process.env.APP_WEB_URL}/reset-password?token=${token}`,
         },
       },
     });
   }
 }
+
 export default SendForgotPasswordEmailService;

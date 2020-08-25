@@ -7,6 +7,7 @@
     "strict": true,
     "strictPropertyInitialization": false,
     "baseUrl": "./src",
+    "allowJs": true,
     "paths": {
       "@modules/*": [
         "modules/*"
@@ -22,5 +23,12 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "coverage",
+    "./jest.config.js",
+    "./prettier.config.js",
+    "./commitlint.config.js"
+  ]
 }

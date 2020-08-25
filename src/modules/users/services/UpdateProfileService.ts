@@ -1,12 +1,8 @@
 import { injectable, inject } from 'tsyringe';
-
 import AppError from '@shared/errors/AppError';
-
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
-
-import IHashProvider from '@modules/users/providers/HashProvider/models/IHashProvider';
-
-import User from '@modules/users/infra/typeorm/entities/User';
+import IHashProvider from '../providers/HashProvider/models/IHashProvider';
+import User from '../infra/typeorm/entities/User';
 
 interface IRequest {
   user_id: string;
@@ -30,8 +26,8 @@ class UpdateProfileService {
     user_id,
     name,
     email,
-    old_password,
     password,
+    old_password,
   }: IRequest): Promise<User> {
     const user = await this.usersRepository.findById(user_id);
 
@@ -50,7 +46,7 @@ class UpdateProfileService {
 
     if (password && !old_password) {
       throw new AppError(
-        'You need to inform the old password to set a new password',
+        'You need to inform the old password to set a new password.',
       );
     }
 
@@ -67,7 +63,7 @@ class UpdateProfileService {
       user.password = await this.hashProvider.generateHash(password);
     }
 
-    return this.usersRepository.save(user);
+    return this.usersRepository.update(user);
   }
 }
 
