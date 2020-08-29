@@ -6,7 +6,7 @@
 
 ## 🚀 Tecnologias:
 
-Projeto foi desenvolvido no Bootcamp GoStack 11.0 da Rocketseat com as seguintes tecnologias:
+Projeto desenvolvido no Bootcamp GoStack 11.0 da Rocketseat com as seguintes tecnologias:
 
 - [Node.js](https://nodejs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
