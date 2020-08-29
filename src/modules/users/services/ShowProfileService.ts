@@ -1,8 +1,9 @@
-import { injectable, inject } from 'tsyringe';
-import AppError from '@shared/errors/AppError';
-import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import { injectable, inject } from "tsyringe";
 
-import User from '../infra/typeorm/entities/User';
+import AppError from "@shared/errors/AppError";
+
+import User from "@modules/users/infra/typeorm/entities/User";
+import IUsersRepository from "../repositories/IUsersRepository";
 
 interface IRequest {
   user_id: string;
@@ -11,7 +12,7 @@ interface IRequest {
 @injectable()
 class ShowProfileService {
   constructor(
-    @inject('UsersRepository')
+    @inject("UsersRepository")
     private usersRepository: IUsersRepository,
   ) {}
 
@@ -19,10 +20,10 @@ class ShowProfileService {
     const user = await this.usersRepository.findById(user_id);
 
     if (!user) {
-      throw new AppError('User not found');
+      throw new AppError("User not found.");
     }
 
-    return this.usersRepository.update(user);
+    return user;
   }
 }
 

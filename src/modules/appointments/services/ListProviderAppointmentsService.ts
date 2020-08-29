@@ -1,10 +1,9 @@
-import { injectable, inject } from 'tsyringe';
+import { injectable, inject } from "tsyringe";
+import { classToClass } from "class-transformer";
 
-import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
-import { classToClass } from 'class-transformer';
-import Appointment from '../infra/typeorm/entities/Appointment';
-
-import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
+import ICacheProvider from "@shared/container/providers/CacheProvider/models/ICacheProvider";
+import Appointment from "../infra/typeorm/entities/Appointment";
+import IAppointmentsRepository from "../repositories/IAppointmentsRepository";
 
 interface IRequest {
   provider_id: string;
@@ -14,12 +13,12 @@ interface IRequest {
 }
 
 @injectable()
-class ListProviderAppointmentsService {
+class ListProvidersAppointmentsService {
   constructor(
-    @inject('AppointmentsRepository')
+    @inject("AppointmentsRepository")
     private appointmentsRepository: IAppointmentsRepository,
 
-    @inject('CacheProvider')
+    @inject("CacheProvider")
     private cacheProvider: ICacheProvider,
   ) {}
 
@@ -47,9 +46,8 @@ class ListProviderAppointmentsService {
 
       await this.cacheProvider.save(cacheKey, classToClass(appointments));
     }
-
     return appointments;
   }
 }
 
-export default ListProviderAppointmentsService;
+export default ListProvidersAppointmentsService;

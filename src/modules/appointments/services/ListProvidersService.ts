@@ -1,11 +1,9 @@
-import { injectable, inject } from 'tsyringe';
+import { injectable, inject } from "tsyringe";
+import { classToClass } from "class-transformer";
 
-import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
-
-import IUsersRepository from '@modules/users/repositories/IUsersRepository';
-
-import User from '@modules/users/infra/typeorm/entities/User';
-import { classToClass } from 'class-transformer';
+import ICacheProvider from "@shared/container/providers/CacheProvider/models/ICacheProvider";
+import User from "@modules/users/infra/typeorm/entities/User";
+import IUsersRepository from "@modules/users/repositories/IUsersRepository";
 
 interface IRequest {
   user_id: string;
@@ -14,10 +12,10 @@ interface IRequest {
 @injectable()
 class ListProvidersService {
   constructor(
-    @inject('UsersRepository')
+    @inject("UsersRepository")
     private usersRepository: IUsersRepository,
 
-    @inject('CacheProvider')
+    @inject("CacheProvider")
     private cacheProvider: ICacheProvider,
   ) {}
 
@@ -28,7 +26,7 @@ class ListProvidersService {
 
     if (!users) {
       users = await this.usersRepository.findAllProviders({
-        except_user_id: user_id,
+        expect_user_id: user_id,
       });
 
       await this.cacheProvider.save(

@@ -1,12 +1,12 @@
-import { uuid } from 'uuidv4';
-import { isEqual, getMonth, getYear, getDate } from 'date-fns';
+import { uuid } from "uuidv4";
+import { isEqual, getMonth, getYear, getDate } from "date-fns";
 
-import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
-import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
-import IFindAllInMonthFromProviderDTO from '@modules/appointments/dtos/IFindAllInMonthFromProviderDTO';
-import IFindAllInDayFromProviderDTO from '@modules/appointments/dtos/IFindAllInDayFromProviderDTO';
+import IAppointmentsRepository from "@modules/appointments/repositories/IAppointmentsRepository";
+import ICreateAppointmentDTO from "@modules/appointments/dtos/ICreateAppointmentDTO";
+import IFindAllInMonthFromProviderDTO from "@modules/appointments/dtos/IFindAllInMonthFromProviderDTO";
+import IFindAllInDayFromProviderDTO from "@modules/appointments/dtos/IFindAllInDayFromProviderDTO";
 
-import Appointment from '../../infra/typeorm/entities/Appointment';
+import Appointment from "../../infra/typeorm/entities/Appointment";
 
 class AppointmentsRepository implements IAppointmentsRepository {
   private appointments: Appointment[] = [];
@@ -20,6 +20,7 @@ class AppointmentsRepository implements IAppointmentsRepository {
         isEqual(appointment.date, date) &&
         appointment.provider_id === provider_id,
     );
+
     return findAppointment;
   }
 
@@ -35,6 +36,7 @@ class AppointmentsRepository implements IAppointmentsRepository {
         getYear(appointment.date) === year
       );
     });
+
     return appointments;
   }
 
@@ -52,6 +54,7 @@ class AppointmentsRepository implements IAppointmentsRepository {
         getYear(appointment.date) === year
       );
     });
+
     return appointments;
   }
 
@@ -62,7 +65,12 @@ class AppointmentsRepository implements IAppointmentsRepository {
   }: ICreateAppointmentDTO): Promise<Appointment> {
     const appointment = new Appointment();
 
-    Object.assign(appointment, { id: uuid(), date, provider_id, user_id });
+    Object.assign(appointment, {
+      id: uuid(),
+      provider_id,
+      user_id,
+      date,
+    });
 
     this.appointments.push(appointment);
 

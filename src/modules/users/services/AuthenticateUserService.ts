@@ -1,13 +1,13 @@
-import { sign } from 'jsonwebtoken';
-import User from '@modules/users/infra/typeorm/entities/User';
-import IUsersRepository from '@modules/users/repositories/IUsersRepository';
-import authConfig from '@config/auth';
+import { sign } from "jsonwebtoken";
+import { injectable, inject } from "tsyringe";
 
-import { injectable, inject } from 'tsyringe';
+import authConfig from "@config/auth";
 
-import AppError from '@shared/errors/AppError';
+import AppError from "@shared/errors/AppError";
 
-import IHashProvider from '../providers/HashProvider/models/IHashProvider';
+import User from "@modules/users/infra/typeorm/entities/User";
+import IUsersRepository from "../repositories/IUsersRepository";
+import IHashProvider from "../providers/HashProvider/models/IHashProvider";
 
 interface IRequest {
   email: string;
@@ -22,10 +22,10 @@ interface IResponse {
 @injectable()
 class AuthenticateUserService {
   constructor(
-    @inject('UsersRepository')
+    @inject("UsersRepository")
     private usersRepository: IUsersRepository,
 
-    @inject('HashProvider')
+    @inject("HashProvider")
     private hashProvider: IHashProvider,
   ) {}
 
@@ -33,25 +33,29 @@ class AuthenticateUserService {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
-      throw new AppError('Incorrect email/password combination.', 401);
+      throw new AppError("Incorrect email/password combination.", 401);
     }
 
-    const passwordMatch = await this.hashProvider.compareHash(
+    const passwordMatched = await this.hashProvider.compareHash(
       password,
       user.password,
     );
 
-    if (!passwordMatch) {
-      throw new AppError('Incorrect email/password combination.', 401);
+    if (!passwordMatched) {
+      throw new AppError("Incorrect email/password combination.", 401);
     }
 
     const { secret, expiresIn } = authConfig.jwt;
+
     const token = sign({}, secret, {
       subject: user.id,
       expiresIn,
     });
 
-    return { user, token };
+    return {
+      user,
+      token,
+    };
   }
 }
 
